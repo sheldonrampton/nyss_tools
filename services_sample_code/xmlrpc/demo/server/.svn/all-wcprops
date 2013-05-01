@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 68
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/demo/server
+END
+discuss.php
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/demo/server/discuss.php
+END
+proxy.php
+K 25
+svn:wc:ra_dav:version-url
+V 78
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/demo/server/proxy.php
+END
+server.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/demo/server/server.php
+END

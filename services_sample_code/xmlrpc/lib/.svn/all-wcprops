@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/lib
+END
+xmlrpc_wrappers.inc
+K 25
+svn:wc:ra_dav:version-url
+V 80
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/lib/xmlrpc_wrappers.inc
+END
+xmlrpcs.inc
+K 25
+svn:wc:ra_dav:version-url
+V 72
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/lib/xmlrpcs.inc
+END
+xmlrpc.inc
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/lib/xmlrpc.inc
+END

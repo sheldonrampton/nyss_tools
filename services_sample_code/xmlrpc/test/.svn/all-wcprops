@@ -1,0 +1,35 @@
+K 25
+svn:wc:ra_dav:version-url
+V 61
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/test
+END
+testsuite.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/test/testsuite.php
+END
+benchmark.php
+K 25
+svn:wc:ra_dav:version-url
+V 75
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/test/benchmark.php
+END
+parse_args.php
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/test/parse_args.php
+END
+phpunit.php
+K 25
+svn:wc:ra_dav:version-url
+V 73
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/test/phpunit.php
+END
+verify_compat.php
+K 25
+svn:wc:ra_dav:version-url
+V 79
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/test/verify_compat.php
+END

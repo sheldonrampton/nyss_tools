@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 63
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/extras
+END
+test.py
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/extras/test.py
+END
+test.pl
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/extras/test.pl
+END
+workspace.testPhpServer.fttb
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/extras/workspace.testPhpServer.fttb
+END
+rsakey.pem
+K 25
+svn:wc:ra_dav:version-url
+V 74
+/nysenate/!svn/ver/3330/misc/services_sample_code/xmlrpc/extras/rsakey.pem
+END
