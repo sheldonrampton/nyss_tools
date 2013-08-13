@@ -20,7 +20,7 @@
 include('xmlrpc-api-signups.inc');
 include('nyss_signup_classes.inc');
 
-$values = nyss_signup_service_get(1375818216, NULL, NULL, NULL, 100);
+$values = nyss_signup_service_get(NULL, NULL, 316132, NULL, 500);
 print var_dump($values);
 
 /**
