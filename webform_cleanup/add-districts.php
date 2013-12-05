@@ -1,146 +1,114 @@
+#!/usr/bin/php
 <?php
-
-/**
- * @file
- * Processes a list of webform submissions by looking up their
- * Senate district.
- */
-
-global $debug;
-$debug = FALSE;
-$zips = FALSE;
-$filepath = $argv[1];
-if (isset($argv[2]) && $argv[2] == '--debug') {
-  $debug = TRUE;
+// loop through each element in the $argv array
+array_shift($argv);
+$test = FALSE;
+$param = array_shift($argv);
+if ($param == '--test') {
+  $test = TRUE;
 }
-if (isset($argv[2]) && $argv[2] == '--zips') {
-  $zips = TRUE;
+else {
+  array_unshift($argv, $param);
 }
-process_rows($filepath);
+foreach($argv as $filename) {
+  echo add_districts($filename, $test);
+}
 
-/**
- * Process a row of tab-text webform submission and add district lookups.
- *
- * @param String $filepath
- *   The path to a tab-text file exported from the Webform module.
- *
- * @return String
- *   A series of tab-text rows with Senate district information added.
- */
-function process_rows($filepath) {
-  global $debug;
-  global $zips;
-  $endloop = FALSE;
-  if ($debug) {
-    $i = 0;
-  }
-  $handle = @fopen($filepath, "r");
+function add_districts($filename, $test) {
+  $handle = @fopen($filename, "r");
   if ($handle) {
-    while (!$endloop && (($buffer = fgets($handle, 65536)) !== false)) {
-      // If debug is true, stop looping after the first 10 items
-      if ($debug) {
-        $i++;
-        if ($i > 99) {
-          $endloop = TRUE;
-        }
-      }
+    while (($buffer = fgets($handle, 4096)) !== false) {
       $buffer = trim($buffer);
-      list(
-        $serial,
-        $sid,
-        $time,
-        $draft,
-        $ip_address,
-        $uid,
-        $username,
-        $name,
-        $address,
-        $school,
-        $student_phone_number,
-        $email,
-        $cumulative_gpa,
-        $nominator,
-        $nominator_phone_number,
-        $nominator_email,
-        $essay,
-        $filename,
-        $filesize_kb,
-        $list_of_school_activities
-      ) = explode("\t", $buffer);
+      
+      /*
+      $serial                 =>  What are you thankful for this year? Submission Details Serial
+      $sid                    =>  SID
+      $time                   =>  Time
+      $draft                  =>  Draft
+      $ip                     =>  IP Address
+      $uid                    =>  UID
+      $username               =>  Username
+      $first_name             =>  First Name
+      $last_name              =>  Last Name
+      $grade_level            =>  Grade Level
+      $school_name            =>  School Name
+      $home_address           =>  Home Address
+      $city                   =>  City/Town
+      $zip_code               =>  Zip Code
+      $parent_name            =>  Parent's First and Last Name
+      $parent_email_address   =>  Parent's email address
+      $description            =>  My submission could best be described as
+      $name;                =>  Attach your submission here Name
+      $filesize               =>  Filesize (KB)
 
-      $address = trim($address);
-      $address_words = explode(" ", $address);
-      $zip = array_pop($address_words);
-      $address = implode(" ", $address_words);
-      if ($zips) {
-        if (!is_numeric($zip) || strlen($zip) != 5) {
-          print "$buffer\n";
-          print "ADDRESS: $address\n";
-          print "ZIP: $zip\n\n";
+      list($serial, $sid, $time, $draft, $ip, $uid, $username, $first_name, $last_name, $grade_level, $school_name, $home_address, $city, 
+      $zip_code, $parent_email_address, $description, $name, $filesize) = explode("\t", $buffer);
+      */
+
+
+      list($serial, $sid, $time, $draft, $ip, $uid, $username, $first_name, $last_name, 
+          $grade_level, $school_name, $home_address, $city, $zip_code, 
+          $parent_name, $parent_email_address, $description, $name, $filesize) = explode("\t", $buffer);
+      $sid = str_replace('"', '', $sid);
+      $state = "NY";
+      if (substr($zip_code, 0, 1) === '0') {
+        $state = "NJ";
+      }
+      $address = "$home_address, $city $state $zip_code";
+      $district = district_lookup($address);
+
+      if ($test) {
+        echo "$address\t$district\n";
+/*
+        if (substr($zip_code, 0, 1) === '0') {
+          echo "New Jersey!\n";
+          $state = "NJ";
         }
+        else echo "$state\n";
+*/
+
       }
       else {
-        $district = district_lookup($address, $zip);
-        if ($debug) {
-          print "ADDRESS: $address $zip\n";
-          print "DISTRICT: $district\n";
-        }
         $buffer = implode("\t", array(
           $serial,
           $sid,
           $time,
           $draft,
-          $ip_address,
+          $ip,
           $uid,
           $username,
+          $first_name,
+          $last_name,
+          $grade_level,
+          $school_name,
+          $home_address,
+          $city,
+          $state,
+          $zip_code,
+          $parent_name,
+          $parent_email_address,
+          $description,
           $name,
-          "$address $zip",
-          $school,
-          $student_phone_number,
-          $email,
-          $cumulative_gpa,
-          $nominator,
-          $nominator_phone_number,
-          $nominator_email,
-          $essay,
-          $filename,
-          $filesize_kb,
-          $list_of_school_activities,
+          $filesize,
           $district,
         ));
         echo $buffer . "\n";
       }
     }
-    if (!feof($handle) && !$debug) {
+    if (!feof($handle)) {
       echo "Error: unexpected fgets() fail\n";
     }
     fclose($handle);
   }
 }
 
-/**
- * Lookup the Senate district for a single address.
- *
- * @param String $address
- *   The street address.
- * @param String $zip
- *   The zip code.
- *
- * @return String
- *   A district number.
- */
-function district_lookup($address, $zip) {
-  $url = "http://pubgeo.nysenate.gov/api/xml/districts/extended/?";
-  $data = array(
-    'addr2' => $address,
-    'zip5' => $zip,
-    'key'=> '85b60bec-683c-43ef-8e3a-9388348f7103',
-    'service' => 'yahoo',
-  );
+function district_lookup($address) {
+  $url ="http://geo.nysenate.gov/api/xml/districts/addr/".urlencode($address)."?";
+  $data = array('key'=> 'JsP46xRBHVQDVhL4XNrvM8VQDNDkA3');
   $urlstring = '';
   foreach ($data as $key => $value) {
     $urlstring .= urlencode($key).'='.urlencode($value).'&';
-  }
+  } 
   $ch=curl_init();
   $ch = curl_init($url);
   curl_setopt($ch, CURLOPT_URL, $url);
@@ -163,6 +131,7 @@ function district_lookup($address, $zip) {
   }
   return FALSE;
 }
+
 
 function hex_chars($data) {
     $mb_chars = '';
@@ -189,7 +158,6 @@ function hex_chars($data) {
         'mb_hex' => $mb_hex,
     );
 }
-
 function hex_format($o) {
     $h = strtoupper(dechex($o));
     $len = strlen($h);
