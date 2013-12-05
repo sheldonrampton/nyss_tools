@@ -1,4 +1,5 @@
 <?php
+// This script was used to add converted PDFs in 2011. Not needed in 2012.
 $handle = @fopen("pdfs.txt", "r");
 if ($handle) {
   $newnames = array();

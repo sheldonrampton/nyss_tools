@@ -1,4 +1,5 @@
 <?php
+// Not needed in 2012
 $test = FALSE;
 $handle = @fopen("with_districts.txt", "r");
 if ($handle) {

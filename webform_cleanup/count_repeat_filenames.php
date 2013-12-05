@@ -1,4 +1,5 @@
 <?php
+// Not needed in 2012
 $handle = @fopen("merged_list.tsv", "r");
 if ($handle) {
   fgets($handle, 4096);

@@ -1,4 +1,5 @@
 <?php
+// Not needed in 2012
 getDirectoryList('.');
 function getDirectoryList ($directory) 
 {

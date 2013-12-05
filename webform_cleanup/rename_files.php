@@ -1,12 +1,15 @@
 <?php
+// Not needed in 2012
 $handle = @fopen("what_are_you_thankful_for_this_year.tsv", "r");
 if ($handle) {
+  fgets($handle, 4096);
+  fgets($handle, 4096);
+  fgets($handle, 4096);
   while (($buffer = fgets($handle, 4096)) !== false) {
     $buffer = str_replace(chr(00),'', $buffer);
     $buffer = trim($buffer);
     $buffer = str_replace('"', '', $buffer);
-    list($serial, $sid, $time, $draft, $ip, $uid, $username, $student_name, $grade, $teacher_name, $school_name, $school_address, $home_address, $city_state_zip, $school_phone, $email_address, $name, $filesize) = explode("\t", $buffer);
-
+    list($serial, $sid, $time, $draft, $ip, $uid, $username, $first_name, $last_name, $grade_level, $school_name, $home_address, $city, $zip_code, $parent_email_address, $description, $name, $filesize) = explode("\t", $buffer);
     if ($name) {
       $filename = str_replace('http://www.nysenate.gov/files/webform/', '', $name);
       echo "$sid\t$sid-$filename\t$filename\n";
