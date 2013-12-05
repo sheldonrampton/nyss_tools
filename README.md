@@ -9,5 +9,5 @@ Miscellaneous code for use in connection with the New York State Senate website.
 * tests: some early tests of the NYSenate API
 * openleg_abandoned: some abandoned code for retrieving legislative information from OpenLegislation
 * webform_cleanup: code for processing webform submissions from various Senate online activities. Each activity appears in a separate branch of this repository:
-** thanksgiving
-** youth_leadership
+ * thanksgiving
+ * youth_leadership
