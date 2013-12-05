@@ -102,6 +102,9 @@ function process_rows($filepath) {
           print "ADDRESS: $address $zip_code\n";
           print "DISTRICT: $district\n";
         }
+        // Note that in addition to adding the Senate district, this also
+        // adds the state. This therefore makes it problematic to rerun this
+        // script on post-processed records.
         else {
           $buffer = implode("\t", array(
             $serial,
