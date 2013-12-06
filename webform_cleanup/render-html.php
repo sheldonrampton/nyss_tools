@@ -1,29 +1,20 @@
-#!/usr/bin/php
 <?php
-// Updated 12.13.2012 by Sheldon Rampton
+/**
+ * @file
+ * Renders HTML for each Senate district
+ * Senate district.
+ */
 
-// loop through each element in the $argv array
-array_shift($argv);
-$test = FALSE;
-$schools_list = FALSE;
-$param = array_shift($argv);
-if ($param == '--test') {
-  $test = TRUE;
+global $debug;
+$debug = FALSE;
+$filepath = $argv[1];
+if (isset($argv[2]) && $argv[2] == '--debug') {
+  $debug = TRUE;
 }
-else if ($param == '--schools') {
-  $schools_list = TRUE;
-}
-else {
-  array_unshift($argv, $param);
-}
-foreach($argv as $filename) {
-  echo render_html($filename, $test, $schools_list);
-}
+process_rows($filepath, $debug);
 
-function render_html($filename, $test, $schools_list) {
-  $handle2 = NULL;
-  $handle = @fopen($filename, "r");
-  $districts = $schools = 0;
+function process_rows($filepath, $debug=FALSE) {
+  $handle = @fopen($filepath, "r");
   if ($handle) {
     $filenames = array();
     $current_district = $current_school = '';
@@ -52,11 +43,13 @@ function render_html($filename, $test, $schools_list) {
         $filesize,
         $district
       ) = explode("\t", $buffer);
+      $student_name = "$first_name $last_name";
+      $city_state_zip = "$city, $state $zip_code";
       if ($district != $current_district) {
         $first_school = TRUE;
         $current_school = '';
         $current_district = $district;
-        if ($test || $schools_list) {
+        if ($debug) {
           echo "NEW DISTRICT: $district\n";
           $districts++;
         }
@@ -70,13 +63,9 @@ function render_html($filename, $test, $schools_list) {
       }
       if ($current_school != $school_name) {
         $current_school = $school_name;
-        if ($test) {
+        if ($debug) {
           $schools++;
           echo "NEW SCHOOL: $school_name\n";
-        }
-        else if ($schools_list) {
-          $schools++;
-          echo "$school_name\n";
         }
         else {
           if ($first_school) {
@@ -88,19 +77,19 @@ function render_html($filename, $test, $schools_list) {
           fwrite($handle2, "<h3>$school_name</h3>\n<ul>");
         }
       }
-      $row = "<li><a href=\"$name\">$first_name $last_name</a></li>\n";
-      if (!$test && !$schools_list) {
+      $row = "<li><a href=\"$name\">$student_name</a></li>\n";
+      if (!$debug) {
         fwrite($handle2, $row);
       }
-      else if (!$schools_list) {
+      else {
         echo $row;
       }
     }
-    if ($test || $schools_list) echo "DISTRICTS: $districts\SCHOOLS: $schools\n";
+    if ($debug) echo "DISTRICTS: $districts\SCHOOLS: $schools\n";
     if (!feof($handle)) {
       echo "Error: unexpected fgets() fail\n";
     }
-    if (!$test && !$schools_list) {
+    if (!$debug) {
       fwrite($handle2, "</ul>");
       fclose($handle2);
     }
