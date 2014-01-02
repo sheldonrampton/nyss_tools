@@ -4,6 +4,7 @@ nyss_tools
 Miscellaneous code for use in connection with the New York State Senate website.
 
 * code_pusher.php: a script for committing and merging code to different branches of an SVN repository.
+* field_counter.php: counts the number of unique fields in each column in a tab text file. (Used for doing analysis of Filemaker Pro database based on web traffic logs.)
 * get_services: a library with sample code for retrieving information from NYSenate.gov via the website's Services module API
 * services_sample_code: sample code for retrieving information from NYSenate.gov
 * tests: some early tests of the NYSenate API
